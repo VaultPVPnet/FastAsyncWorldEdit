@@ -19,6 +19,7 @@
 
 package com.sk89q.bukkit.util;
 
+import com.fastasyncworldedit.bukkit.util.CommandAccess;
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.util.StringUtil;
 import com.sk89q.wepif.PermissionsResolverManager;
@@ -30,6 +31,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -88,6 +90,11 @@ public class DynamicPluginCommand extends org.bukkit.command.Command implements 
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        //FAWE start - hide all commands from senders without any FAWE/WorldEdit permission
+        if (!CommandAccess.hasAccess(sender)) {
+            return Collections.emptyList();
+        }
+        //FAWE end
         if (registeredWith instanceof CommandInspector) {
             return ((TabCompleter) owner).onTabComplete(sender, this, alias, args);
         } else {
@@ -98,6 +105,11 @@ public class DynamicPluginCommand extends org.bukkit.command.Command implements 
     @SuppressWarnings("unchecked")
     @Override
     public boolean testPermissionSilent(CommandSender sender) {
+        //FAWE start - hide all commands from senders without any FAWE/WorldEdit permission
+        if (!CommandAccess.hasAccess(sender)) {
+            return false;
+        }
+        //FAWE end
         if (permissions == null || permissions.length == 0) {
             return true;
         }

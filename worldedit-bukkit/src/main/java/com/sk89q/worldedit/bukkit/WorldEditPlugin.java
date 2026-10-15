@@ -21,6 +21,7 @@ package com.sk89q.worldedit.bukkit;
 
 import com.fastasyncworldedit.bukkit.BukkitPermissionAttachmentManager;
 import com.fastasyncworldedit.bukkit.FaweBukkit;
+import com.fastasyncworldedit.bukkit.util.CommandAccess;
 import com.fastasyncworldedit.bukkit.util.PaperSupport;
 import com.fastasyncworldedit.core.Fawe;
 import com.fastasyncworldedit.core.util.UpdateNotification;
@@ -512,6 +513,12 @@ public class WorldEditPlugin extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        //FAWE start - act as if the command does not exist for senders without any FAWE/WorldEdit permission
+        if (!CommandAccess.hasAccess(sender)) {
+            CommandAccess.sendUnknownCommand(sender, commandLabel);
+            return true;
+        }
+        //FAWE end
         // Add the command to the array because the underlying command handling
         // code of WorldEdit expects it
         String[] split = new String[args.length + 1];
@@ -730,6 +737,13 @@ public class WorldEditPlugin extends JavaPlugin {
             if (owner != WorldEditPlugin.this) {
                 return;
             }
+            //FAWE start - no suggestions for senders without any FAWE/WorldEdit permission
+            if (!CommandAccess.hasAccess(event.getSender())) {
+                event.setCompletions(ImmutableList.of());
+                event.setHandled(true);
+                return;
+            }
+            //FAWE end
 
             final Optional<org.enginehub.piston.Command> command
                     = WorldEdit.getInstance().getPlatformManager().getPlatformCommandManager().getCommandManager().getCommand(

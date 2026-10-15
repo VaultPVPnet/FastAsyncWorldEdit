@@ -21,6 +21,7 @@
 
 package com.sk89q.worldedit.bukkit;
 
+import com.fastasyncworldedit.bukkit.util.CommandAccess;
 import com.fastasyncworldedit.core.configuration.Settings;
 import com.fastasyncworldedit.core.util.UpdateNotification;
 import com.sk89q.worldedit.LocalSession;
@@ -111,6 +112,13 @@ public class WorldEditListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandSend(PlayerCommandSendEvent event) {
+        //FAWE start - hide every FAWE command from players without any FAWE/WorldEdit permission
+        if (!CommandAccess.hasAccess(event.getPlayer())) {
+            event.getCommands().removeIf(name ->
+                    plugin.getInternalPlatform().getDynamicCommands().getCommandOwner(name) == plugin);
+            return;
+        }
+        //FAWE end
         InjectedValueStore store = MapBackedValueStore.create();
         store.injectValue(Key.of(Actor.class), context ->
                 Optional.of(plugin.wrapCommandSender(event.getPlayer())));
