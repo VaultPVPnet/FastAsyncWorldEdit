@@ -24,7 +24,6 @@ import com.fastasyncworldedit.bukkit.FaweBukkit;
 import com.fastasyncworldedit.bukkit.util.CommandAccess;
 import com.fastasyncworldedit.bukkit.util.PaperSupport;
 import com.fastasyncworldedit.core.Fawe;
-import com.fastasyncworldedit.core.util.UpdateNotification;
 import com.fastasyncworldedit.core.util.WEManager;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -272,8 +271,6 @@ public class WorldEditPlugin extends JavaPlugin {
                 -> WEManager.weManager().getManagers().toString().contains("residence") ? "Yes" : "No"));
         // Check if we are in a safe environment
         ServerLib.checkUnsafeForks();
-        // Check if a new build is available
-        UpdateNotification.doUpdateCheck();
     }
 
     private void setupPreWorldData() {

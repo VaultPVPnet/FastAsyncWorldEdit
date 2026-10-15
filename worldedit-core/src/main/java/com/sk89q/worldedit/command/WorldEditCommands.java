@@ -24,7 +24,6 @@ import com.fastasyncworldedit.core.FaweVersion;
 import com.fastasyncworldedit.core.configuration.Caption;
 import com.fastasyncworldedit.core.configuration.Settings;
 import com.fastasyncworldedit.core.limit.FaweLimit;
-import com.fastasyncworldedit.core.util.UpdateNotification;
 import com.intellectualsites.paster.IncendoPaster;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -81,7 +80,6 @@ public class WorldEditCommands {
                 .clickEvent(ClickEvent.openUrl("https://intellectualsites.github.io/fastasyncworldedit-documentation/")));
         actor.print(TextComponent.of("Discord: https://discord.gg/intellectualsites")
                 .clickEvent(ClickEvent.openUrl("https://discord.gg/intellectualsites")));
-        UpdateNotification.doUpdateNotification(actor);
         //FAWE end
     }
 
